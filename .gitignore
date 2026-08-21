@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Credenciais e segredos
+*.json
+!requirements*.json
+.env
+.env.*
+credentials/
+secrets/
+
+# Dados brutos (não versionar)
+data/raw/
+data/processed/
+
+# Outputs de modelos (opcionais)
+*.pkl
+*.joblib
+*.h5
+*.model
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Reports gerados
+reports/*.html
+reports/*.pdf
+images/*.png
+images/*.jpg
