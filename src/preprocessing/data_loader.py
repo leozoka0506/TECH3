@@ -79,31 +79,50 @@ def load_analytical_base(client: bigquery.Client = None) -> pd.DataFrame:
     if client is None:
         client = get_client()
 
+    # NOTA: gap_para_meta_2030 e meta_2030 estão NULL na tabela gap_meta_municipio
+    # (não foram populados na Fase 2). O gap é calculado sinteticamente abaixo
+    # com base em uma meta de referência de 80% (alinhada ao PNE 2030).
     query = """
+        WITH base AS (
+            SELECT
+                i.id_municipio,
+                i.nome_municipio,
+                i.sigla_uf,
+                i.nome_uf,
+                i.regiao,
+                i.ano,
+                i.taxa_alfabetizacao,
+                i.media_portugues,
+                i.taxa_alfabetizacao_uf,
+                i.status_alfabetizacao,
+                i.taxa_nulo_flag,
+                g.status_alfabetizacao AS status_meta_municipio
+            FROM
+                `tech2-499614.alfabetizacao_gold.indicador_por_municipio` i
+            LEFT JOIN
+                `tech2-499614.alfabetizacao_gold.gap_meta_municipio` g
+            ON
+                i.id_municipio = g.id_municipio
+        )
+        -- Agrega por municipio/ano (elimina duplicatas por rede)
+        -- Calcula gap sintetico usando meta PNE 2030 = 80%
         SELECT
-            i.id_municipio,
-            i.nome_municipio,
-            i.sigla_uf,
-            i.nome_uf,
-            i.regiao,
-            i.ano,
-            i.rede,
-            i.taxa_alfabetizacao,
-            i.media_portugues,
-            i.taxa_alfabetizacao_uf,
-            i.meta_alfabetizacao_2030,
-            i.gap_para_meta_2030,
-            i.status_alfabetizacao,
-            i.taxa_nulo_flag,
-            g.ultimo_ano,
-            g.meta_2030,
-            g.status_alfabetizacao AS status_atual_municipio
-        FROM
-            `tech2-499614.alfabetizacao_gold.indicador_por_municipio` i
-        LEFT JOIN
-            `tech2-499614.alfabetizacao_gold.gap_meta_municipio` g
-        ON
-            i.id_municipio = g.id_municipio
+            id_municipio,
+            nome_municipio,
+            sigla_uf,
+            nome_uf,
+            regiao,
+            ano,
+            AVG(taxa_alfabetizacao)         AS taxa_alfabetizacao,
+            AVG(media_portugues)            AS media_portugues,
+            AVG(taxa_alfabetizacao_uf)      AS taxa_alfabetizacao_uf,
+            80.0 - AVG(taxa_alfabetizacao)  AS gap_para_meta_2030,
+            MAX(status_alfabetizacao)       AS status_alfabetizacao,
+            MAX(status_meta_municipio)      AS status_meta_municipio,
+            LOGICAL_OR(taxa_nulo_flag)      AS taxa_nulo_flag
+        FROM base
+        GROUP BY
+            id_municipio, nome_municipio, sigla_uf, nome_uf, regiao, ano
     """
 
     print("[INFO] Construindo base analítica (JOIN indicador + gap_meta)...")

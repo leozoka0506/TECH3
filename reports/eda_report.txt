@@ -1,0 +1,146 @@
+======================================================================
+EDA - Tech Challenge Fase 3 | Alfabetizacao no Brasil
+======================================================================
+======================================================================
+1. CARGA DOS DADOS
+======================================================================
+
+Base analítica: 11,030 linhas x 13 colunas
+ranking_uf:      (50, 12)
+resumo_regiao:   (10, 9)
+evolucao_nac:    (2, 7)
+
+======================================================================
+2. VISÃO GERAL DA BASE ANALÍTICA
+======================================================================
+
+[Tipos de dados]
+id_municipio              object
+nome_municipio            object
+sigla_uf                  object
+nome_uf                   object
+regiao                    object
+ano                        Int64
+taxa_alfabetizacao       float64
+media_portugues          float64
+taxa_alfabetizacao_uf    float64
+gap_para_meta_2030       float64
+status_alfabetizacao      object
+status_meta_municipio     object
+taxa_nulo_flag           boolean
+
+[Valores nulos por coluna]
+                       nulos  pct_%
+taxa_alfabetizacao_uf      1   0.01
+
+[Estatísticas descritivas — numéricas]
+           ano  taxa_alfabetizacao  media_portugues  taxa_alfabetizacao_uf  gap_para_meta_2030
+count  11030.0           11030.000        11030.000              11029.000           11030.000
+mean    2023.5              61.969          752.101                 57.556              18.031
+std        0.5              19.281           23.088                 11.903              19.281
+min     2023.0               4.400          673.300                 30.935             -20.000
+25%     2023.0              48.000          736.840                 51.020               3.260
+50%     2024.0              62.630          751.200                 59.275              17.370
+75%     2024.0              76.740          764.642                 63.490              32.000
+max     2024.0             100.000          868.460                 85.330              75.600
+  [Salvo] images/01_valores_nulos.png
+
+======================================================================
+3. VARIÁVEL-ALVO: status_alfabetizacao
+======================================================================
+
+                            contagem  pct_%
+status_alfabetizacao                       
+Crítico                         5165  46.83
+Atenção                         3429  31.09
+Em progresso                    1926  17.46
+Meta praticamente atingida       510   4.62
+  [Salvo] images/02_distribuicao_target.png
+
+  Classes identificadas: ['Crítico', 'Atenção', 'Em progresso', 'Meta praticamente atingida']
+  Desbalanceamento: ratio máx/mín = 10.13x
+
+======================================================================
+4. DISTRIBUIÇÃO DA TAXA DE ALFABETIZAÇÃO
+======================================================================
+  Média: 61.9686
+  Mediana: 62.6300
+  Std: 19.2808
+  Min: 4.4000
+  Max: 100.0000
+  Skewness: -0.1680
+  Kurtosis: -0.6091
+  [Salvo] images/03_distribuicao_taxa_alfabetizacao.png
+
+======================================================================
+5. ANÁLISE TEMPORAL
+======================================================================
+  Anos disponíveis: [np.int64(2023), np.int64(2024)]
+
+ ano   mean  median    std
+2023 60.707   61.30 19.527
+2024 63.229   64.23 18.950
+  [Salvo] images/04_evolucao_temporal.png
+
+======================================================================
+6. ANÁLISE GEOGRÁFICA
+======================================================================
+
+  Ano de referência: 2024
+
+  TOP 10 — Maiores taxas de alfabetização:
+           nome_municipio sigla_uf  taxa_alfabetizacao
+               Bacurituba       MA               100.0
+           Belém do Piauí       PI               100.0
+Caldeirão Grande do Piauí       PI               100.0
+        Campinas do Piauí       PI               100.0
+             Júlio Borges       PI               100.0
+             Landri Sales       PI               100.0
+             Padre Marcos       PI               100.0
+       Vila Nova do Piauí       PI               100.0
+                  Catunda       CE               100.0
+                   Coreaú       CE               100.0
+
+  TOP 10 — Menores taxas de alfabetização:
+  nome_municipio sigla_uf  taxa_alfabetizacao
+Barão do Triunfo       RS                4.40
+Chapada de Areia       TO                6.25
+        Mateiros       TO                9.09
+Triunfo Potiguar       RN               10.95
+           Sério       RS               11.10
+       Pedrinhas       SE               11.52
+Dirceu Arcoverde       PI               11.96
+        Macururé       BA               12.50
+      Filadélfia       TO               12.63
+         Arataca       BA               13.11
+  [Salvo] images/05_ranking_municipios.png
+  [Salvo] images/06_ranking_uf.png
+
+======================================================================
+7. MATRIZ DE CORRELAÇÕES
+======================================================================
+
+  Correlações com taxa_alfabetizacao:
+gap_para_meta_2030      -1.0000
+media_portugues          0.9260
+taxa_alfabetizacao_uf    0.6641
+ano                      0.0654
+  [Salvo] images/07_correlacoes.png
+
+======================================================================
+8. ANÁLISE DE GAP PARA META 2030
+======================================================================
+
+  Municípios com GAP positivo (abaixo da meta): 8,894 (80.6%)
+  Municípios que já atingiram a meta:           2,136 (19.4%)
+  GAP médio: 18.03  |  GAP máximo: 75.60
+  [Salvo] images/08_gap_meta_2030.png
+
+======================================================================
+9. VERIFICAÇÃO DE HIPÓTESES ANALÍTICAS
+======================================================================
+
+  H1 — CONFIRMADA: Norte: 48.65% vs Sul: 68.43%
+  H2 — CONFIRMADA: Correlação de Pearson = 0.9260
+  H3 — VERIFICADO: {'Crítico': 34.86, 'Atenção': 10.08, 'Em progresso': -4.18, 'Meta praticamente atingida': -15.05}
+  [Salvo] images/09_hipoteses.png
