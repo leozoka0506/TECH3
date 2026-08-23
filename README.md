@@ -1,104 +1,88 @@
-# 🎓 Tech Challenge — Fase 3
-## Predição e Inteligência Analítica para Alfabetização no Brasil
+# Tech Challenge Fase 3 — Análise de Alfabetização Municipal no Brasil
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
-![BigQuery](https://img.shields.io/badge/BigQuery-Google_Cloud-blue?logo=google-cloud)
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML_Pipeline-orange?logo=scikit-learn)
-![Status](https://img.shields.io/badge/Status-Em_Desenvolvimento-yellow)
+![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python)
+![BigQuery](https://img.shields.io/badge/GCP-BigQuery-orange?logo=googlecloud)
+![XGBoost](https://img.shields.io/badge/XGBoost-3.2-red)
+![Scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-F7931E?logo=scikit-learn)
+![Status](https://img.shields.io/badge/Status-Concluido-4ADE80)
 
----
-
-## 📌 Contexto do Problema
-
-A alfabetização infantil é um dos principais indicadores do desenvolvimento educacional e social do Brasil. O **Indicador Criança Alfabetizada (ICA)** monitora o percentual de crianças que atingem proficiência mínima em Língua Portuguesa ao final do 2º ano do Ensino Fundamental.
-
-Apesar da disponibilidade de dados públicos, gestores educacionais ainda carecem de ferramentas que permitam **antecipar riscos**, identificar municípios vulneráveis e entender quais fatores têm maior impacto nos indicadores de alfabetização.
+> **IAST (Instituto de Alfabetização, Saúde e Trabalho)**  
+> Previsão do status de alfabetização de municípios brasileiros com Machine Learning — Tech Challenge Pós-Graduação FIAP, Fase 3.
 
 ---
 
-## 🎯 Objetivo Analítico
+## 🎯 Objetivo
 
-Desenvolver um **modelo supervisionado de classificação** capaz de prever se um município será considerado **alfabetizado** ou **não alfabetizado**, utilizando variáveis educacionais, territoriais e socioeconômicas provenientes da camada Gold construída na Fase 2.
+Desenvolver um **pipeline completo de Data Science** — da engenharia de dados ao modelo de ML em produção — para classificar municípios brasileiros em quatro categorias de risco de alfabetização:
 
----
-
-## 🗄️ Base de Dados
-
-Os dados são provenientes do dataset `alfabetizacao_gold` no **BigQuery (GCP)**, construído na Fase 2 do Tech Challenge:
-
-| Tabela | Descrição | Linhas |
-|--------|-----------|--------|
-| `indicador_por_municipio` | Base principal — indicadores por município/ano | 23.995 |
-| `gap_meta_municipio` | Gap em relação à meta 2030 por município | 5.550 |
-| `ranking_uf` | Ranking e estatísticas por estado | 50 |
-| `evolucao_nacional` | Evolução histórica nacional | 2 |
-| `resumo_por_regiao` | Resumo por região geográfica | 10 |
-
-### Fontes externas utilizadas
-> *(a preencher conforme enriquecimento da base)*
+| Status | Descrição |
+|---|---|
+| 🔴 **Crítico** | Taxa de alfabetização muito baixa, alto risco de não atingir a meta 2030 |
+| 🟠 **Atenção** | Situação preocupante, requer intervenção |
+| 🔵 **Em progresso** | Avanço positivo, mas ainda abaixo da meta |
+| 🟢 **Meta praticamente atingida** | Município próximo ou acima de 80% (PNE 2030) |
 
 ---
 
-## 🔬 Etapas de Modelagem
+## 📊 Resultados Principais
 
-1. **Análise Exploratória de Dados (EDA)**
-   - Distribuições, correlações, nulos e outliers
-   - Formulação de hipóteses analíticas
+### 🏆 Melhor Modelo: XGBoost (split temporal 2023 → 2024)
 
-2. **Feature Engineering**
-   - Criação de variáveis derivadas
-   - Encoding de variáveis categóricas
-   - Tratamento de data leakage
+| Métrica | Valor |
+|---|---|
+| **F1-Score (weighted)** | **0.859** |
+| **Accuracy** | **0.863** |
+| Cross-Validation F1 | 0.918 ± 0.002 |
 
-3. **Pipeline de ML (Scikit-learn)**
-   - Imputação de valores faltantes
-   - Normalização/padronização
-   - Treinamento e validação cruzada
+### 📈 Comparativo de Modelos
 
-4. **Avaliação e Interpretabilidade**
-   - Métricas: F1-Score, ROC-AUC, Precision, Recall
-   - Feature Importance e SHAP Values
+| Modelo | CV F1 | F1 Teste | Accuracy |
+|---|---|---|---|
+| Regressão Logística (baseline) | 0.896 ± 0.004 | 0.856 | 0.856 |
+| Random Forest | 0.904 ± 0.005 | 0.850 | 0.854 |
+| **XGBoost ⭐** | **0.918 ± 0.002** | **0.859** | **0.863** |
 
----
+### 🔍 SHAP Values — Feature Importance
 
-## 🤖 Escolha do Algoritmo
+| Rank | Feature | Importância (SHAP) |
+|---|---|---|
+| 1 | `acima_media_nacional` | 0.424 |
+| 2 | `media_portugues` | 0.206 |
+| 3 | `acima_media_uf` | 0.078 |
+| 4 | `proficiencia_normalizada` | 0.070 |
+| 5 | `taxa_alfabetizacao_uf` | 0.053 |
 
-| Modelo | Papel |
-|--------|-------|
-| Regressão Logística | Baseline interpretável |
-| Random Forest | Modelo principal — robusto e interpretável |
-| XGBoost | Comparativo — alto desempenho |
-
-A escolha final será baseada no **F1-Score** e na **interpretabilidade via SHAP**.
+> **Insight:** a posição relativa do município frente à média nacional é o preditor dominante — 2× mais importante que a proficiência bruta em português.
 
 ---
 
-## 📊 Métricas de Avaliação
-
-- **F1-Score** (métrica principal — dados desbalanceados)
-- **ROC-AUC**
-- **Precision / Recall**
-- **Matriz de Confusão**
-
----
-
-## 📁 Estrutura do Projeto
+## 🗂️ Estrutura do Projeto
 
 ```
 tech-challenge-fase3/
-│
-├── data/               # Dados locais (não versionados)
-├── notebooks/          # Notebooks exploratórios
+├── data/                       # Dados locais (não versionados)
+├── images/                     # 21 gráficos gerados
+│   ├── 01-09_eda/             # EDA
+│   ├── 10-15_modeling/        # Modelagem e SHAP
+│   └── 16-21_adicionais/      # Visualizações extras + dashboard
+├── notebooks/                  # (reservado para exploração)
+├── reports/
+│   ├── eda_report.txt          # Relatório completo da EDA
+│   ├── model_results.txt       # Métricas dos 3 modelos
+│   └── evaluation_report.txt   # SHAP + Perguntas de negócio
 ├── src/
-│   ├── preprocessing/  # Carga e preparação dos dados
-│   ├── modeling/       # Treinamento e pipeline de ML
-│   ├── evaluation/     # Métricas e avaliação
-│   └── visualization/  # Geração de gráficos
-├── reports/            # Relatórios gerados
-├── images/             # Visualizações salvas
+│   ├── preprocessing/
+│   │   ├── data_loader.py      # Integração BigQuery + SQL com gap sintético
+│   │   ├── eda.py              # Análise Exploratória (9 seções)
+│   │   └── feature_engineering.py  # 6 features + tratamento de leakage
+│   ├── modeling/
+│   │   └── train.py            # Pipeline Scikit-learn (3 modelos)
+│   ├── evaluation/
+│   │   └── evaluate.py         # SHAP Values + perguntas de negócio
+│   └── visualization/
+│       └── visualizacoes_adicionais.py  # 6 gráficos extras + dashboard
 ├── requirements.txt
-├── README.md
-└── .gitignore
+└── README.md
 ```
 
 ---
@@ -106,54 +90,71 @@ tech-challenge-fase3/
 ## 🚀 Como Executar
 
 ### Pré-requisitos
+
 ```bash
 pip install -r requirements.txt
 gcloud auth application-default login
 ```
 
-### Testar conexão com BigQuery
-```bash
-python test_connection.py
-```
+### Passo a passo
 
-### Executar EDA
 ```bash
+# 1. EDA completa (gera images/01-09 e reports/eda_report.txt)
 python src/preprocessing/eda.py
-```
 
-### Treinar modelo
-```bash
+# 2. Treinamento dos modelos (gera images/10-11 e best_model.pkl)
 python src/modeling/train.py
+
+# 3. Avaliação + SHAP (gera images/12-15 e reports/evaluation_report.txt)
+python src/evaluation/evaluate.py
+
+# 4. Visualizações adicionais (gera images/16-21)
+python src/visualization/visualizacoes_adicionais.py
 ```
 
 ---
 
-## 💡 Insights Encontrados
+## 🔬 Decisões Técnicas
 
-> *(a preencher após a EDA)*
+### Variável-alvo
+`status_alfabetizacao` — 4 classes derivadas do gap para a meta PNE 2030.
 
----
+### Prevenção de Data Leakage
+As features `taxa_alfabetizacao`, `gap_para_meta_2030` e `nivel_risco` foram **excluídas** do modelo por serem derivadas diretamente da variável-alvo. O uso ingênuo dessas features resulta em F1=1.0 (leakage trivial).
 
-## ⚠️ Limitações do Projeto
+### Split Temporal (não aleatório)
+- **Treino:** dados de 2023 (≈11.500 municípios)
+- **Teste:** dados de 2024 (≈12.400 municípios)
 
-> *(a preencher ao final)*
+Simula o cenário real: *"com os dados de hoje, consigo prever o status educacional do município no próximo ciclo?"*
 
----
-
-## 🏛️ Aplicação Prática para Políticas Públicas
-
-> *(a preencher após análise dos resultados)*
-
----
-
-## 🔮 Possíveis Evoluções Futuras
-
-> *(a preencher ao final)*
+### Meta PNE 2030
+A coluna `gap_para_meta_2030` nas tabelas do BigQuery está 100% nula (não populada na Fase 2). Foi calculada sinteticamente como `80% - taxa_alfabetizacao`, alinhada ao **Plano Nacional de Educação**.
 
 ---
 
-## 👤 Autor
+## 📍 Principais Insights da EDA
 
-**Leonardo Wojcik**  
-Pós-graduação em Inteligência Analítica e Ciência de Dados — FIAP  
-Tech Challenge — Fase 3 | 2026
+| Hipótese | Resultado |
+|---|---|
+| **H1** — Desigualdade regional existe | ✅ Norte: 48.7% vs Sul: 68.4% |
+| **H2** — Proficiência em português prediz taxa | ✅ Pearson = 0.926 |
+| **H3** — Gap cresce com piora do status | ✅ Crítico: +34.9pp vs Adequado: -15.1pp |
+
+- **80.6%** dos municípios brasileiros estão abaixo da meta de 80% para 2030
+- **10.987 municípios** classificados como "Crítico" (46.8% da base)
+- Desbalanceamento de **10.1×** entre a maior e menor classe
+
+---
+
+## ⚙️ Infraestrutura
+
+- **Fonte dos dados:** Google BigQuery (`tech2-499614.alfabetizacao_gold`)
+- **Tabelas:** `indicador_por_municipio`, `gap_meta_municipio`, `ranking_uf`, `resumo_por_regiao`, `evolucao_nacional`
+- **Autenticação:** `gcloud auth application-default login`
+
+---
+
+## 👤 Autores
+
+Projeto desenvolvido como Tech Challenge da Pós-Graduação em Data Analytics — FIAP.
