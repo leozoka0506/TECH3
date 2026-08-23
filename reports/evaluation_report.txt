@@ -1,0 +1,77 @@
+======================================================================
+AVALIACAO E INTERPRETABILIDADE — Tech Challenge Fase 3
+======================================================================
+[INFO] Modelo carregado: XGBoost
+[INFO] F1 no teste: 0.8590
+
+======================================================================
+2. FEATURE IMPORTANCE (nativa do modelo)
+======================================================================
+
+  Feature Importances:
+                 feature  importance
+    acima_media_nacional    0.884937
+proficiencia_normalizada    0.030938
+         media_portugues    0.026078
+          acima_media_uf    0.019382
+              regiao_ord    0.017600
+                  regiao    0.009612
+                sigla_uf    0.005925
+   taxa_alfabetizacao_uf    0.005529
+  [Salvo] images/12_feature_importance.png
+
+======================================================================
+3. SHAP VALUES — Interpretabilidade Global
+======================================================================
+  Calculando SHAP para 500 amostras...
+  [AVISO] TreeExplainer falhou (ValueError): could not convert string to float: '[1.0047144E0,6.991104E-1,-1.8200767E-1,-1.5218171E0]'
+  Usando PermutationExplainer como fallback...
+  [PermutationExplainer OK]
+
+  SHAP Feature Importance (global, media absoluta):
+                 feature  shap_importance
+    acima_media_nacional         0.423928
+         media_portugues         0.205888
+          acima_media_uf         0.077583
+proficiencia_normalizada         0.069828
+   taxa_alfabetizacao_uf         0.052891
+              regiao_ord         0.024610
+                sigla_uf         0.021334
+                  regiao         0.008628
+  [Salvo] images/13_shap_importance.png
+  [INFO] Beeswarm pulado (PermutationExplainer retorna formato incompativel)
+
+======================================================================
+4. RESPOSTAS AS PERGUNTAS DE NEGOCIO
+======================================================================
+
+  Q1: Quais fatores mais impactam a alfabetizacao?
+    Top 3 (SHAP): ['acima_media_nacional', 'media_portugues', 'acima_media_uf']
+    Top 3 (Feature Importance): ['acima_media_nacional', 'proficiencia_normalizada', 'media_portugues']
+
+  Q2: Municipios com maior risco educacional (gap > 40pp):
+Empty DataFrame
+Columns: [nome_municipio, sigla_uf, taxa_alfabetizacao, gap_para_meta_2030]
+Index: []
+
+  Q3: Media de taxa de alfabetizacao por regiao:
+               mean    std  count
+regiao                           
+Norte         49.03  16.41   1869
+Nordeste      53.55  22.69   7850
+Sudeste       67.25  15.08   6780
+Centro-Oeste  67.47  17.55   1959
+Sul           67.59  15.77   5537
+
+  Q4: Municipios criticos — provavelmente nao atingirao a meta 2030:
+    Total de municipios criticos: 10,987
+    Gap medio nos criticos: nan pp
+
+  Q5: Variaveis com maior influencia no modelo:
+                 feature  shap_importance
+    acima_media_nacional         0.423928
+         media_portugues         0.205888
+          acima_media_uf         0.077583
+proficiencia_normalizada         0.069828
+   taxa_alfabetizacao_uf         0.052891
+  [Salvo] images/15_business_questions.png
