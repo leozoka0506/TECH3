@@ -155,6 +155,33 @@ A coluna `gap_para_meta_2030` nas tabelas do BigQuery está 100% nula (não popu
 
 ---
 
+## 🏛️ Aplicação para Políticas Públicas
+
+Este projeto foi construído para apoiar **gestores públicos e formuladores de políticas educacionais**. Os resultados podem ser aplicados de forma prática:
+
+| Uso | Como aplicar |
+|---|---|
+| **Priorização de intervenções** | Identificar municípios Críticos (gap > 40pp) para alocação emergencial de recursos |
+| **Monitoramento preditivo** | Usar o modelo anualmente para antecipar municípios em deterioração antes dos dados oficiais |
+| **Foco na causa raiz** | Investir em ensino de língua portuguesa — preditor com SHAP=0.206, maior alavanca comprovada |
+| **Política regional** | Tratar Norte (49%) e Nordeste (53,6%) com programas específicos — não genéricos |
+| **Metas realistas** | Municípios Críticos precisam avançar 3 pp/ano até 2030 — 4× o ritmo histórico; exige intervenção estrutural |
+
+---
+
+## ⚠️ Limitações do Projeto
+
+| Limitação | Impacto | Sugestão de Mitigação |
+|---|---|---|
+| **Apenas 2 anos de dados** (2023–2024) | Split temporal tem pouco histórico; tendências de longo prazo não capturadas | Incorporar anos anteriores quando disponíveis |
+| **Ausência de dados socioeconômicos** (IBGE, PNAD, IDH) | Modelo usa apenas indicadores educacionais — fatores estruturais não observados | Enriquecer base com Atlas do Desenvolvimento Humano e Censo Escolar |
+| **gap_para_meta_2030 sintético** | A coluna original estava 100% nula no BigQuery; gap foi calculado como `80% - taxa_alfabetizacao` | Aguardar dados oficiais da Fase 2 corrigidos |
+| **Desbalanceamento de classes** (10:1) | Classe minoritária ("Meta atingida") com menor recall mesmo com `class_weight=balanced` | SMOTE ou técnicas de oversampling específicas |
+| **Variável-alvo dependente de thresholds** | `status_alfabetizacao` é definido por intervalos — mudança nos limites altera completamente as classes | Considerar regressão (taxa contínua) como objetivo alternativo |
+| **Sem dados de investimento público** | Não captura efeito de políticas educacionais específicas em andamento | Integrar dados do FUNDEB por município |
+
+---
+
 ## 👤 Autores
 
 Projeto desenvolvido como Tech Challenge da Pós-Graduação em Data Analytics — FIAP.
