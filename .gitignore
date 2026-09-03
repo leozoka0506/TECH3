@@ -50,3 +50,6 @@ reports/*.html
 reports/*.pdf
 images/*.png
 images/*.jpg
+
+# Apresentação executiva (não versionar)
+presentation/
