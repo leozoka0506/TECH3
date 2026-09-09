@@ -123,8 +123,8 @@ python src/visualization/visualizacoes_adicionais.py
 As features `taxa_alfabetizacao`, `gap_para_meta_2030` e `nivel_risco` foram **excluídas** do modelo por serem derivadas diretamente da variável-alvo. O uso ingênuo dessas features resulta em F1=1.0 (leakage trivial).
 
 ### Split Temporal (não aleatório)
-- **Treino:** dados de 2023 (≈11.500 municípios)
-- **Teste:** dados de 2024 (≈12.400 municípios)
+- **Treino:** dados de 2023 (**5.514 municípios**)
+- **Teste:** dados de 2024 (**5.516 municípios**)
 
 Simula o cenário real: *"com os dados de hoje, consigo prever o status educacional do município no próximo ciclo?"*
 
@@ -137,13 +137,14 @@ A coluna `gap_para_meta_2030` nas tabelas do BigQuery está 100% nula (não popu
 
 | Hipótese | Resultado |
 |---|---|
-| **H1** — Desigualdade regional existe | ✅ Norte: 48.7% vs Sul: 68.4% |
+| **H1** — Desigualdade regional existe | ✅ Norte: 48,65% vs Sul: 68,43% (brecha de 19,8 pp) |
 | **H2** — Proficiência em português prediz taxa | ✅ Pearson = 0.926 |
-| **H3** — Gap cresce com piora do status | ✅ Crítico: +34.9pp vs Adequado: -15.1pp |
+| **H3** — Gap cresce com piora do status | ✅ Crítico +34,9 pp abaixo da meta |
 
-- **80.6%** dos municípios brasileiros estão abaixo da meta de 80% para 2030
-- **10.987 municípios** classificados como "Crítico" (46.8% da base)
-- Desbalanceamento de **10.1×** entre a maior e menor classe
+- **95,4%** dos registros estão abaixo da meta de 80% para 2030
+- **5.165 registros** classificados como "Crítico" (46,8% da base de 11.030)
+- Desbalanceamento de **10,1×** entre a maior e menor classe (5.165 vs 510)
+- Cobertura: **5.514–5.516 municípios/ano** dos **5.570 brasileiros** (99%)
 
 ---
 
@@ -164,7 +165,7 @@ Este projeto foi construído para apoiar **gestores públicos e formuladores de 
 | **Priorização de intervenções** | Identificar municípios Críticos (gap > 40pp) para alocação emergencial de recursos |
 | **Monitoramento preditivo** | Usar o modelo anualmente para antecipar municípios em deterioração antes dos dados oficiais |
 | **Foco na causa raiz** | Investir em ensino de língua portuguesa — preditor com SHAP=0.206, maior alavanca comprovada |
-| **Política regional** | Tratar Norte (49%) e Nordeste (53,6%) com programas específicos — não genéricos |
+| **Política regional** | Tratar Norte (48,65%) e Nordeste (54,82%) com programas específicos — não genéricos |
 | **Metas realistas** | Municípios Críticos precisam avançar 3 pp/ano até 2030 — 4× o ritmo histórico; exige intervenção estrutural |
 
 ---
