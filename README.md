@@ -142,8 +142,7 @@ A coluna `gap_para_meta_2030` nas tabelas do BigQuery está 100% nula (não popu
 | **H3** — Gap cresce com piora do status | ✅ Crítico +34,9 pp abaixo da meta |
 
 - **80,6%** dos municípios estão abaixo da meta absoluta de 80% para 2030
-- **5.165 municípios** classificados como "Crítico" (46,8% da base)
-- Desbalanceamento de **10,1×** entre a maior e menor classe (5.165 vs 510)
+- **46,8% dos municípios** classificados como "Crítico" (desbalanceamento de 10,1× em relação à classe mais alta)
 - Cobertura: **5.514–5.516 municípios/ano** dos **5.570 brasileiros** (99%)
 
 ---
