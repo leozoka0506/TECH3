@@ -184,4 +184,6 @@ Este projeto foi construído para apoiar **gestores públicos e formuladores de 
 
 ## 👤 Autores
 
+Leonardo Antonio Wojcik
+
 Projeto desenvolvido como Tech Challenge da Pós-Graduação em Data Analytics — FIAP.
