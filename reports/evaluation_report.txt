@@ -30,14 +30,14 @@ proficiencia_normalizada    0.030938
 
   SHAP Feature Importance (global, media absoluta):
                  feature  shap_importance
-    acima_media_nacional         0.423928
-         media_portugues         0.205888
-          acima_media_uf         0.077583
-proficiencia_normalizada         0.069828
-   taxa_alfabetizacao_uf         0.052891
-              regiao_ord         0.024610
-                sigla_uf         0.021334
-                  regiao         0.008628
+    acima_media_nacional         0.397326
+         media_portugues         0.206374
+          acima_media_uf         0.072910
+proficiencia_normalizada         0.060259
+   taxa_alfabetizacao_uf         0.056916
+              regiao_ord         0.030983
+                sigla_uf         0.022798
+                  regiao         0.007790
   [Salvo] images/13_shap_importance.png
   [INFO] Beeswarm pulado (PermutationExplainer retorna formato incompativel)
 
@@ -50,28 +50,36 @@ proficiencia_normalizada         0.069828
     Top 3 (Feature Importance): ['acima_media_nacional', 'proficiencia_normalizada', 'media_portugues']
 
   Q2: Municipios com maior risco educacional (gap > 40pp):
-Empty DataFrame
-Columns: [nome_municipio, sigla_uf, taxa_alfabetizacao, gap_para_meta_2030]
-Index: []
+           nome_municipio sigla_uf  taxa_alfabetizacao  gap_para_meta_2030
+         Barão do Triunfo       RS                4.40               75.60
+            Recursolândia       TO                4.56               75.44
+                 Macururé       BA                4.65               75.35
+         Chapada de Areia       TO                6.25               73.75
+               Pau D'Arco       TO                6.51               73.49
+           Lagoa do Piauí       PI                7.17               72.83
+Porto Alegre do Tocantins       TO                7.57               72.43
+                     Ermo       SC                8.81               71.19
+            Simão Pereira       MG                8.82               71.18
+              Palmeirante       TO                9.01               70.99
 
   Q3: Media de taxa de alfabetizacao por regiao:
                mean    std  count
 regiao                           
-Norte         49.03  16.41   1869
-Nordeste      53.55  22.69   7850
-Sudeste       67.25  15.08   6780
-Centro-Oeste  67.47  17.55   1959
-Sul           67.59  15.77   5537
+Norte         48.65  15.77    848
+Nordeste      54.82  22.63   3576
+Sudeste       66.77  14.72   3325
+Centro-Oeste  68.10  17.01    931
+Sul           68.43  14.97   2350
 
   Q4: Municipios criticos — provavelmente nao atingirao a meta 2030:
-    Total de municipios criticos: 10,987
-    Gap medio nos criticos: nan pp
+    Total de municipios criticos: 5,165
+    Gap medio nos criticos: 34.86 pp
 
   Q5: Variaveis com maior influencia no modelo:
                  feature  shap_importance
-    acima_media_nacional         0.423928
-         media_portugues         0.205888
-          acima_media_uf         0.077583
-proficiencia_normalizada         0.069828
-   taxa_alfabetizacao_uf         0.052891
+    acima_media_nacional         0.397326
+         media_portugues         0.206374
+          acima_media_uf         0.072910
+proficiencia_normalizada         0.060259
+   taxa_alfabetizacao_uf         0.056916
   [Salvo] images/15_business_questions.png
